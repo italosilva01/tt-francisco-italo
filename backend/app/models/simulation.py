@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from decimal import Decimal
 
+
 class SimulationModel(BaseModel):
     property_value: float = Field(
         ..., 

@@ -1,6 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from sqlalchemy.orm import Session
+from ..database.database import get_db
+from ..models.simulation_db import SimulationDB
 from ..models.simulation import SimulationModel
-from typing import Dict, Any
+from typing import Dict, Any, List
 from decimal import Decimal
 
 FIFTEEN_PERCENT = Decimal('15')
@@ -18,7 +21,7 @@ async def test() -> Dict[str, Any]:
     }
 
 @router.post("/simulacao")
-async def simulate_financing(data: SimulationModel) -> Dict[str, Any]:
+async def simulate_financing(data: SimulationModel, db: Session = Depends(get_db)) -> Dict[str, Any]:
     """
     Calculate a financing simulation
     """
@@ -32,6 +35,19 @@ async def simulate_financing(data: SimulationModel) -> Dict[str, Any]:
         save_duration_contract = property_value * (FIFTEEN_PERCENT / HUNDRED)
         monthly_amount_saved = save_duration_contract / (contract_years * TWELVE)
 
+        db_simulation = SimulationDB(
+            property_value=property_value,
+            value_entry=value_entry,
+            financed_amount=financed_amount,
+            value_percentage_entry=value_percentage_entry,
+            contract_years=contract_years,
+            monthly_amount_saved=monthly_amount_saved
+        )
+
+        db.add(db_simulation)
+        db.commit()
+        db.refresh(db_simulation)
+
         return {
             "success": True,
             "data": {
@@ -44,30 +60,37 @@ async def simulate_financing(data: SimulationModel) -> Dict[str, Any]:
             }
         }
     except Exception as e:
+        db.rollback()
         raise HTTPException(
             status_code=400,
             detail=f"Error calculating simulation: {str(e)}"
         )
 
-@router.post("/calculate")
-async def calculate_simulation(simulation: SimulationModel) -> Dict[str, Any]:
+@router.get("/historico")
+async def get_history(db: Session = Depends(get_db)) -> Dict[str, Any]:
     """
-    Calcula uma simulação de financiamento
+    Get all simulations from the database
     """
     try:
+        simulations = db.query(SimulationDB).all()
         return {
             "success": True,
-            "data": {
-                "property_value": float(simulation.property_value),
-                "entry_value": float(simulation.entry_value),
-                "financed_amount": float(simulation.financed_amount),
-                "contract_years": simulation.contract_years,
-                "monthly_payment": _calculate_monthly_payment(simulation)
+            "data": [
+            {
+                "id": str(sim.id),
+                "property_value": float(sim.property_value),
+                "value_entry": float(sim.value_entry),
+                "financed_amount": float(sim.financed_amount),
+                "contract_years": float(sim.contract_years),
+                "created_at": sim.created_at.isoformat()
             }
-        }
+            for sim in simulations
+            ]
+            }   
     except Exception as e:
         raise HTTPException(
-            status_code=400,
-            detail=f"Erro ao calcular simulação: {str(e)}"
+            status_code=500,
+            detail=f"Error getting history: {str(e)}"
         )
+
 
