@@ -1,29 +1,28 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .controllers.simulation_controller import router as simulation_router
+from app.constants.settings import settings
 
 app = FastAPI(
     title="aMore API",
     description="API para simulação de financiamento imobiliário"
 )
 
-# Configuração do CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+    max_age=86400,
 )
 
-# Incluindo as rotas do SimulationController
 app.include_router(simulation_router)
 
-# Rota principal
 @app.get("/")
 def root():
     return {
         "message": "API aMore está funcionando!",
-        "docs": "/docs",  # Swagger UI
-        "redoc": "/redoc"  # ReDoc
+        "docs": "/docs",
+        "redoc": "/redoc"
     }
