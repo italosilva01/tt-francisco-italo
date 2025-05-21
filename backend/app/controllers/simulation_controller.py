@@ -11,15 +11,6 @@ HUNDRED = Decimal('100')
 TWELVE = Decimal('12')
 router = APIRouter(prefix="", tags=["Simulation"])
 
-@router.get("/test")
-async def test() -> Dict[str, Any]:
-    return {
-        "success": True,
-        "data": {
-            "hello": "world"
-        }
-    }
-
 @router.post("/simulacao")
 async def simulate_financing(data: SimulationModel, db: Session = Depends(get_db)) -> Dict[str, Any]:
     """
