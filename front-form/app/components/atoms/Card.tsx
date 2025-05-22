@@ -26,7 +26,7 @@ const CardTitle = ({ children, className, ...rest }: HTMLAttributes<HTMLHeadingE
     return <h1 className={`text-base ${className}`} {...rest}>{children}</h1>
 }
 
-const CardResume = ({ children, className = '', ...rest }: HTMLAttributes<HTMLHeadingElement>) => {
+const CardContent = ({ children, className = '', ...rest }: HTMLAttributes<HTMLHeadingElement>) => {
     return <h2 className={`text-base ${className}`} {...rest}>{children}</h2>
 }
 
@@ -56,7 +56,7 @@ const CardQuotes = ({ size = 19 }: CardQuotesProps) => <Image src="/Quotes.svg" 
 export const Card = {
     Root: CardRoot,
     Title: CardTitle,
-    Resume: CardResume,
+    Content: CardContent,
     WrapLabel: CardWrapLabel,
     Label: CardLabel,
     Image: CardImage,

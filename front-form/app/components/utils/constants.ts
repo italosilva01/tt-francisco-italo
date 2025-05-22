@@ -21,3 +21,13 @@ export const FORM_INPUTS = [
         'aria-label': 'Digite os anos de contrato',
     },
 ] as const; 
+
+export const CARD_RESULT_SIMULATION_LABELS = {
+    property_value: 'Valor do imóvel',
+    value_entry: 'Valor da entrada',
+    contract_years: 'Anos de contrato',
+    monthly_amount_to_be_saved: 'Valor mensal a guardar',
+    financed_amount: 'Valor financiado',
+    save_duration_contract: "Guardar ao longo do contrato",
+    total_amount: 'Valor total',
+}

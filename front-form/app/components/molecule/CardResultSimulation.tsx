@@ -3,9 +3,20 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '../atoms/Card';
+import { CARD_RESULT_SIMULATION_LABELS } from '../utils/constants';
+
+type SimulationData = {
+    property_value: string;
+    value_percentage_entry: string;
+    contract_years: string;
+    monthly_installment: string;
+    total_installments: string;
+    total_interest: string;
+    total_amount: string;
+}
 
 interface CardResultSimulationProps {
-    data: any;
+    data: Partial<SimulationData>;
     className?: string;
 }
 
@@ -14,7 +25,7 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
     className = ''
 }) => {
     if (!data) return null;
-
+    console.log("data", data)
     return (
         <motion.div
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
@@ -27,7 +38,7 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
                 opacity: { duration: 0.5, delay: 0.1 },
                 scale: { duration: 0.3, delay: 0.1 }
             }}
-            className={`border-2 border-purple-500/20 rounded-lg backdrop-blur-sm bg-white/5 p-6 max-w-[500px] !mx-auto relative ml-1.5 ${className}`}
+            className={`border-2 border-purple-500/20 rounded-lg backdrop-blur-sm bg-white/5 p-6 max-w-[31.25rem] !mx-auto relative ml-1.5 ${className}`}
             role="region"
             aria-label="Resultado da simulação"
         >
@@ -35,11 +46,25 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
                 <Card.Title className="text-xl font-semibold text-white mb-4">
                     Resultado da Simulação
                 </Card.Title>
-                <div className="text-white/80 space-y-2">
-                    <pre className="whitespace-pre-wrap break-words">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
-                </div>
+                <Card.Content className="grid grid-cols-2 justify-between gap-x-4">
+
+                    {Object.keys(data).map((key) => {
+                        const typedKey = key as keyof SimulationData;
+                        return (
+                            <React.Fragment key={key}>
+                                <Card.Label
+                                    text={`${CARD_RESULT_SIMULATION_LABELS[typedKey]} :`}
+                                    className='text-white/80 border-b border-white/20'
+                                />
+                                <Card.Label
+                                    text={data[typedKey] || ''}
+                                    className='text-white/80'
+                                />
+                            </React.Fragment>
+                        );
+                    })}
+
+                </Card.Content>
             </Card.Root>
         </motion.div>
     );

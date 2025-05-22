@@ -28,7 +28,8 @@ export default function Home() {
 
     try {
       const response = await api.post('/simulacao', payload)
-      setResponse(response.data)
+      console.log(response)
+      setResponse(response.data.data)
       if (!isMobileScreen) {
         setX(-100)
       }
