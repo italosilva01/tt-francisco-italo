@@ -1,122 +1,49 @@
 "use client";
 
-import React from 'react';
+import React, { useTransition } from 'react';
 import { Panel } from '../atoms/Panel';
-import { Form, FormMessage } from '@/components/ui/form';
-import { FormControl } from '@/components/ui/form';
-import { FormLabel } from '@/components/ui/form';
-import { FormItem } from '@/components/ui/form';
-import { FormField } from '@/components/ui/form';
-import { Control, useForm } from 'react-hook-form';
-
+import { Form } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { simulationFormSchema } from '../utils/zodSchemas';
-import { Input } from '@/components/ui/input';
-import { formatCurrency, unformatCurrency } from '../utils/formatterString';
-
-
-
-interface FormSimulationProps {
-    className?: string;
-    onSubmit: (data: z.infer<typeof simulationFormSchema>) => void;
-}
-
-interface CustomInputProps {
-    control: Control<z.infer<typeof simulationFormSchema>>;
-    nameInput: 'propertyValue' | 'valuePercentageEntry' | 'contractYears';
-    label: string;
-    placeholder: string;
-    prefix: string;
-}
-
-const INPUTS = [
-    {
-        name: 'propertyValue',
-        label: 'Valor do imóvel',
-        placeholder: '0,00',
-        prefix: 'R$',
-    },
-    {
-        name: 'valuePercentageEntry',
-        label: 'Valor da entrada',
-        placeholder: '0,00',
-        prefix: 'R$',
-    },
-    {
-        name: 'contractYears',
-        label: 'Anos de contrato',
-        placeholder: '0',
-        prefix: '',
-    },
-]
+import { CustomInput } from './CustomInput';
+import { FormData, FormSimulationProps } from './types';
+import { FORM_INPUTS } from '../utils/constants';
 
 const FormSimulation: React.FC<FormSimulationProps> = ({
     className = '',
     onSubmit
 }) => {
-    const form = useForm<z.infer<typeof simulationFormSchema>>({
+    const [isPending, startTransition] = useTransition();
+
+    const form = useForm<FormData>({
         resolver: zodResolver(simulationFormSchema),
         defaultValues: {
             propertyValue: undefined,
             valuePercentageEntry: undefined,
             contractYears: undefined,
         },
-    })
+    });
 
-    const CustomInput = ({ control, nameInput, label, placeholder, prefix }: CustomInputProps) => {
-        return (
-            <FormField
-                control={control}
-                name={nameInput}
-                render={({ field }) => (
-                    <FormItem>
-                        <FormLabel>{label}</FormLabel>
-                        <FormControl>
-                            <div className="relative">
-                                {prefix && (
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
-                                        {prefix}
-                                    </span>
-                                )}
-                                <Input
-                                    placeholder={placeholder}
-                                    className={`${prefix ? 'pl-8' : ''}`}
-                                    {...field}
-                                    value={
-                                        nameInput === 'contractYears'
-                                            ? field.value || ''
-                                            : field.value
-                                                ? formatCurrency(field.value.toString())
-                                                : ''
-                                    }
-                                    onChange={(e) => {
-                                        const rawValue = e.target.value;
-                                        if (nameInput === 'contractYears') {
-                                            const value = rawValue.replace(/\D/g, '');
-                                            field.onChange(value ? Number(value) : undefined);
-                                        } else {
-                                            const formattedValue = formatCurrency(rawValue);
-                                            const numericValue = unformatCurrency(rawValue);
-                                            e.target.value = formattedValue;
-                                            field.onChange(numericValue);
-                                        }
-                                    }}
-                                />
-                            </div>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-        )
-    }
+    const handleSubmit = async (data: FormData) => {
+        try {
+            startTransition(async () => {
+                await onSubmit(data);
+            });
+        } catch (error) {
+            console.error('Erro ao enviar formulário:', error);
+        }
+    };
 
     return (
-        <Panel.Root className={`w-full min-w-[500px] max-w-2xl ${className}`}>
+        <Panel.Root
+            className={`w-full mx-auto lg:min-w-[31.25rem] max-w-2xl ${className}`}
+            role="region"
+            aria-label="Formulário de simulação de financiamento"
+        >
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(onSubmit)}
+                    onSubmit={form.handleSubmit(handleSubmit)}
                     className="flex flex-col gap-6"
                     role="form"
                 >
@@ -127,18 +54,26 @@ const FormSimulation: React.FC<FormSimulationProps> = ({
                     </Panel.Header>
 
                     <Panel.Content className='flex flex-col gap-4 max-h-96 overflow-y-auto'>
-                        {INPUTS.map((input) => (
-                            <CustomInput key={input.name} control={form.control} nameInput={input.name as 'propertyValue' | 'valuePercentageEntry' | 'contractYears'} label={input.label} placeholder={input.placeholder} prefix={input.prefix} />
+                        {FORM_INPUTS.map((input) => (
+                            <CustomInput
+                                key={input.name}
+                                control={form.control}
+                                nameInput={input.name}
+                                label={input.label}
+                                placeholder={input.placeholder}
+                                prefix={input.prefix}
+                            />
                         ))}
                     </Panel.Content>
 
                     <Panel.Footer className="flex justify-end">
                         <button
                             type="submit"
-                            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
+                            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                             aria-label="Enviar formulário"
+                            disabled={isPending || !form.formState.isValid}
                         >
-                            Enviar
+                            {isPending ? 'Enviando...' : 'Enviar'}
                         </button>
                     </Panel.Footer>
                 </form>

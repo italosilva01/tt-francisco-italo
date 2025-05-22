@@ -1,12 +1,8 @@
-export const formatCurrency = (value: string): string => {
-    const numericValue = value.replace(/\D/g, '');
-
-    const numberValue = Number(numericValue) / 100;
-
+export const formatCurrency = (value: string = ''): string => {
     return new Intl.NumberFormat('pt-BR', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    }).format(numberValue);
+    }).format(Number(value));
 };
 
 export const unformatCurrency = (value: string): number => {
