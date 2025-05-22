@@ -13,6 +13,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { simulationFormSchema } from '../utils/zodSchemas';
 import { Input } from '@/components/ui/input';
+import { formatCurrency, unformatCurrency } from '../utils/formatterString';
+
+
 
 interface FormSimulationProps {
     className?: string;
@@ -80,10 +83,24 @@ const FormSimulation: React.FC<FormSimulationProps> = ({
                                     placeholder={placeholder}
                                     className={`${prefix ? 'pl-8' : ''}`}
                                     {...field}
-                                    value={field.value || ''}
+                                    value={
+                                        nameInput === 'contractYears'
+                                            ? field.value || ''
+                                            : field.value
+                                                ? formatCurrency(field.value.toString())
+                                                : ''
+                                    }
                                     onChange={(e) => {
-                                        const value = e.target.value ? parseFloat(e.target.value) : 0;
-                                        field.onChange(value);
+                                        const rawValue = e.target.value;
+                                        if (nameInput === 'contractYears') {
+                                            const value = rawValue.replace(/\D/g, '');
+                                            field.onChange(value ? Number(value) : undefined);
+                                        } else {
+                                            const formattedValue = formatCurrency(rawValue);
+                                            const numericValue = unformatCurrency(rawValue);
+                                            e.target.value = formattedValue;
+                                            field.onChange(numericValue);
+                                        }
                                     }}
                                 />
                             </div>

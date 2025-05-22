@@ -3,10 +3,9 @@ Settings module for the application
 """
 from typing import List
 
-# Frontend URLs - Ajuste conforme necessário
 FRONTEND_URLS = [
-    "http://localhost:3000",  # URL de desenvolvimento
-    "http://127.0.0.1:3000",  # URL alternativa de desenvolvimento
+    "http://localhost:3000",  
+    "http://127.0.0.1:3000", 
 ]
 
 class Settings:

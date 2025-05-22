@@ -1,7 +1,5 @@
--- Criar extensão para UUID se não existir
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- Criar tabela simulations
 CREATE TABLE IF NOT EXISTS simulations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     property_value FLOAT NOT NULL,
@@ -13,9 +11,7 @@ CREATE TABLE IF NOT EXISTS simulations (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Criar índices para melhor performance
 CREATE INDEX IF NOT EXISTS idx_simulations_created_at ON simulations(created_at);
 
--- Garantir permissões
 ALTER TABLE simulations OWNER TO postgres;
 GRANT ALL PRIVILEGES ON TABLE simulations TO postgres; 

@@ -6,7 +6,6 @@ import { simulationFormSchema } from './components/utils/zodSchemas';
 export default function Home() {
   const handleSubmit = (data: z.infer<typeof simulationFormSchema>) => {
     console.log('Dados do formulário:', data);
-    // Aqui você pode fazer o que quiser com os dados
   };
 
   return (

@@ -1,15 +1,11 @@
-#!/bin/bash
 
-# Configurar PYTHONPATH
 export PYTHONPATH=/app:${PYTHONPATH}
 
-# Aguardar o PostgreSQL
 echo "Aguardando o PostgreSQL..."
 while ! pg_isready -h db -p 5432 -U postgres; do
     sleep 1
 done
 
-# Inicializar o banco de dados
 echo "Inicializando o banco de dados..."
 cd /app
 python -c '
