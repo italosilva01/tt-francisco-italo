@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { simulationFormSchema } from '../utils/zodSchemas';
+import { simulationFormSchema } from '../../utils/zodSchemas';
 import { Control } from 'react-hook-form';
 
 export type FormData = z.infer<typeof simulationFormSchema>;

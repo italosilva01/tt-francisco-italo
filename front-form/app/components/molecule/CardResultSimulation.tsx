@@ -3,7 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '../atoms/Card';
-import { CARD_RESULT_SIMULATION_LABELS } from '../utils/constants';
+import { CARD_RESULT_SIMULATION_LABELS } from '../../utils/constants';
+import { formatCurrency } from '../../utils/formatterString';
 
 type SimulationData = {
     property_value: string;
@@ -25,7 +26,6 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
     className = ''
 }) => {
     if (!data) return null;
-    console.log("data", data)
     return (
         <motion.div
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
@@ -42,11 +42,11 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
             role="region"
             aria-label="Resultado da simulação"
         >
-            <Card.Root>
+            <Card.Root className='border-none'>
                 <Card.Title className="text-xl font-semibold text-white mb-4">
                     Resultado da Simulação
                 </Card.Title>
-                <Card.Content className="grid grid-cols-2 justify-between gap-x-4">
+                <Card.Content className="grid grid-cols-2 justify-between gap-x-4 ">
 
                     {Object.keys(data).map((key) => {
                         const typedKey = key as keyof SimulationData;
@@ -54,11 +54,11 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
                             <React.Fragment key={key}>
                                 <Card.Label
                                     text={`${CARD_RESULT_SIMULATION_LABELS[typedKey]} :`}
-                                    className='text-white/80 border-b border-white/20'
+                                    className='text-white/80 border-b !w-fit border-white/20'
                                 />
                                 <Card.Label
-                                    text={data[typedKey] || ''}
-                                    className='text-white/80'
+                                    text={typedKey === 'contract_years' ? `${data[typedKey]}` : `R$ ${formatCurrency(data[typedKey] || '')}`}
+                                    className='text-white/80 w-fit  ml-auto'
                                 />
                             </React.Fragment>
                         );

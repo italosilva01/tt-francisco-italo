@@ -1,6 +1,6 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { formatCurrency, unformatCurrency } from '../utils/formatterString';
+import { formatCurrency, unformatCurrency } from '../../utils/formatterString';
 import { CustomInputProps } from './types';
 
 export const CustomInput = ({ control, nameInput, label, placeholder, prefix }: CustomInputProps) => {

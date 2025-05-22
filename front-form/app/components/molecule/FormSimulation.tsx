@@ -5,10 +5,11 @@ import { Panel } from '../atoms/Panel';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { simulationFormSchema } from '../utils/zodSchemas';
+import { simulationFormSchema } from '../../utils/zodSchemas';
 import { CustomInput } from './CustomInput';
 import { FormData, FormSimulationProps } from './types';
-import { FORM_INPUTS } from '../utils/constants';
+import { FORM_INPUTS } from '../../utils/constants';
+import Link from 'next/link';
 
 const FormSimulation: React.FC<FormSimulationProps> = ({
     className = '',
@@ -66,10 +67,11 @@ const FormSimulation: React.FC<FormSimulationProps> = ({
                         ))}
                     </Panel.Content>
 
-                    <Panel.Footer className="flex justify-end">
+                    <Panel.Footer className="flex justify-between">
+                        <Link href="/history" className='text-blue-500 underline hover:text-blue-800 transition-all duration-200'>Ir para histórico</Link>
                         <button
                             type="submit"
-                            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                            className="rounded-md bg-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                             aria-label="Enviar formulário"
                             disabled={isPending || !form.formState.isValid}
                         >

@@ -1,14 +1,15 @@
 "use client"
+import { useState } from 'react';
 import { z } from 'zod';
 
 import FormSimulation from './components/molecule/FormSimulation';
-import { simulationFormSchema } from './components/utils/zodSchemas';
+import { simulationFormSchema } from './utils/zodSchemas';
 import api from '@/services/api';
 import { ApiPayloadSimulation } from './components/molecule/types';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { useMobile } from './hooks/useMobile';
 import CardResultSimulation from './components/molecule/CardResultSimulation';
+import BaseTemplate from './components/templates/BaseTemplate';
 
 type SimulationFormValues = z.infer<typeof simulationFormSchema>;
 
@@ -16,7 +17,7 @@ type SimulationFormValues = z.infer<typeof simulationFormSchema>;
 export default function Home() {
   const [x, setX] = useState(0)
   const isMobileScreen = useMobile()
-  const [response, setResponse] = useState<any>(null)
+  const [response, setResponse] = useState<unknown>(null)
   const handleSubmit = async (data: SimulationFormValues) => {
     const { propertyValue, valuePercentageEntry, contractYears } = data;
 
@@ -28,7 +29,6 @@ export default function Home() {
 
     try {
       const response = await api.post('/simulacao', payload)
-      console.log(response)
       setResponse(response.data.data)
       if (!isMobileScreen) {
         setX(-100)
@@ -40,27 +40,27 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-black">
-      <main className="flex flex-col gap-[32px] items-center justify-center lg:flex-row lg:gap-0 lg:max-w-fit w-full">
-        <motion.div
-          initial={{ opacity: 0, x: -100 }}
-          animate={{
-            opacity: 1,
-            x: x,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            opacity: { duration: 0.5 }
-          }}
-        >
-          <FormSimulation onSubmit={handleSubmit} />
-        </motion.div>
-        {response && (
-          <CardResultSimulation data={response} />
-        )}
-      </main>
-    </div>
+    <BaseTemplate >
+      <motion.div
+        initial={{ opacity: 0, x: -100 }}
+        animate={{
+          opacity: 1,
+          x: x,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+          opacity: { duration: 0.5 }
+        }}
+      >
+        <FormSimulation onSubmit={handleSubmit} />
+      </motion.div>
+      {response && (
+        <CardResultSimulation data={response} />
+      )}
+    </BaseTemplate>
+
+
   );
 }
