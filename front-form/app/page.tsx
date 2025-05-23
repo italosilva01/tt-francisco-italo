@@ -7,7 +7,7 @@ import { simulationFormSchema } from '@/utils/zodSchemas';
 import api from '@/services/api';
 import { useMobile } from '@/hooks/useMobile';
 import FormSimulation from '@/molecules/FormSimulation';
-import { ApiPayloadSimulation } from '@/types/types';
+import { ApiPayloadSimulation, SimulationData } from '@/types/types';
 import BaseTemplate from '@/templates/BaseTemplate';
 import CardResultSimulation from '@/molecules/CardResultSimulation';
 
@@ -17,7 +17,7 @@ type SimulationFormValues = z.infer<typeof simulationFormSchema>;
 export default function Home() {
   const [x, setX] = useState(0)
   const isMobileScreen = useMobile()
-  const [response, setResponse] = useState<unknown>(null)
+  const [response, setResponse] = useState<SimulationData | null>(null)
   const handleSubmit = async (data: SimulationFormValues) => {
     const { propertyValue, valuePercentageEntry, contractYears } = data;
 

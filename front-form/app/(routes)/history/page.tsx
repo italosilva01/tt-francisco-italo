@@ -1,12 +1,14 @@
 import EmptyState from '@/app/components/atoms/EmptyState';
 import SimulationsBoard from '@/app/components/organims/BoardSimulations';
 import BaseTemplate from '@/app/components/templates/BaseTemplate';
+import { serverLogger } from '@/app/lib/serverLogger';
 import api from '@/services/api';
 
 async function HistoryPage() {
     try {
         const response = await api.get('/historico')
         const simulations = response.data.data
+        serverLogger.log('Dados recebidos:', response);
 
         return (
             <BaseTemplate

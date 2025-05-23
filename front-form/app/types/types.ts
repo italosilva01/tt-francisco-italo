@@ -5,12 +5,14 @@ import { Control } from 'react-hook-form';
 export type FormData = z.infer<typeof simulationFormSchema>;
 export type SimulationData = {
     property_value: string;
-    value_percentage_entry: string;
+    value_entry: string;
     contract_years: string;
-    monthly_installment: string;
-    total_installments: string;
-    total_interest: string;
+    monthly_amount_to_be_saved: string;
+    financed_amount: string;
+    save_duration_contract: string;
     total_amount: string;
+    id?: string;
+    created_at?: string;
 }
 export interface FormSimulationProps {
     className?: string;

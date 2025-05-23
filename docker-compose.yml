@@ -2,17 +2,23 @@ version: '3.8'
 
 services:
   frontend:
+    container_name: amore-frontend
     build:
       context: ./front-form
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - DEBUG=true
+      - NEXT_TELEMETRY_DEBUG=1
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NEXT_PUBLIC_CLIENT_API_URL=http://localhost:8000
     depends_on:
       - backend
 
   backend:
+    container_name: amore-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -25,6 +31,7 @@ services:
       - db
 
   db:
+    container_name: amore-postgres
     image: postgres:14
     ports:
       - "5432:5432"

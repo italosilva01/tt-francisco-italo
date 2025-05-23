@@ -46,9 +46,11 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
                 <Card.Content >
                     <div className='flex flex-col justify-between gap-x-4'>
                         {Object.keys(data).map((key) => {
-                            const typedKey = key as keyof typeof CARD_RESULT_SIMULATION_LABELS;
+                            const typedKey = key as keyof SimulationData;
                             const label = CARD_RESULT_SIMULATION_LABELS[typedKey];
-                            const value = typedKey === 'contract_years' ? `${data[typedKey]}` : `R$ ${formatCurrency(data[typedKey] || '')}`;
+                            const value = typedKey === 'contract_years'
+                                ? `${data[typedKey]}`
+                                : `R$ ${formatCurrency(String(data[typedKey]) || '')}`;
                             return (
                                 <div className='flex' key={key}>
                                     <Card.Label
