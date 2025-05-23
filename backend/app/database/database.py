@@ -4,18 +4,17 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 import logging
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env_path = BASE_DIR / '.env'
+
+load_dotenv(dotenv_path=env_path)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    logger.error("DATABASE_URL não encontrada no arquivo .env")
-    DATABASE_URL = "postgresql://postgres:sua_senha_aqui@localhost:5432/amore_db"
-
-logger.info(f"Tentando conectar ao banco de dados: {DATABASE_URL}")
 
 try:
     engine = create_engine(

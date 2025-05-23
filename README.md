@@ -66,6 +66,8 @@ teste
 docker-compose up -d db
 docker-compose up -d backend
 
+
+docker-compose up --build -d
 > ⚠️ Certifique-se de que todas as variáveis de ambiente estejam configuradas antes de executar o servidor
 
 
