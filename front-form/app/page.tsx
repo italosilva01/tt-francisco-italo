@@ -1,15 +1,15 @@
 "use client"
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
-
-import FormSimulation from './components/molecule/FormSimulation';
-import { simulationFormSchema } from './utils/zodSchemas';
-import api from '@/services/api';
-import { ApiPayloadSimulation } from './components/molecule/types';
 import { motion } from 'framer-motion';
-import { useMobile } from './hooks/useMobile';
-import CardResultSimulation from './components/molecule/CardResultSimulation';
-import BaseTemplate from './components/templates/BaseTemplate';
+
+import { simulationFormSchema } from '@/utils/zodSchemas';
+import api from '@/services/api';
+import { useMobile } from '@/hooks/useMobile';
+import FormSimulation from '@/molecules/FormSimulation';
+import { ApiPayloadSimulation } from '@/types/types';
+import BaseTemplate from '@/templates/BaseTemplate';
+import CardResultSimulation from '@/molecules/CardResultSimulation';
 
 type SimulationFormValues = z.infer<typeof simulationFormSchema>;
 

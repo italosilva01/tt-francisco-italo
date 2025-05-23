@@ -1,5 +1,5 @@
 import EmptyState from '@/app/components/atoms/EmptyState';
-import BoardSimulations from '@/app/components/organims/BoardSimulations';
+import SimulationsBoard from '@/app/components/organims/BoardSimulations';
 import BaseTemplate from '@/app/components/templates/BaseTemplate';
 import api from '@/services/api';
 
@@ -11,12 +11,11 @@ async function HistoryPage() {
         return (
             <BaseTemplate
                 titlePage='Histórico de Simulações'
-
             >
                 {!simulations?.length ? (
                     <EmptyState />
                 ) : (
-                    <BoardSimulations
+                    <SimulationsBoard
                         simulations={simulations}
                         className="w-full max-w-[90rem] mx-auto"
                     />

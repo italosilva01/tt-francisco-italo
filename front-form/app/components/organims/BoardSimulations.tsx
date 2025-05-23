@@ -1,24 +1,17 @@
 "use client"
 
 import { motion } from 'framer-motion';
-import CardResultSimulation from '../molecule/CardResultSimulation';
+import { SimulationData } from '@/app/types/types';
+import CardResultSimulation from '@/molecules/CardResultSimulation';
 
-type SimulationData = {
-    property_value: string;
-    value_percentage_entry: string;
-    contract_years: string;
-    monthly_installment: string;
-    total_installments: string;
-    total_interest: string;
-    total_amount: string;
-}
 
-interface BoardSimulationsProps {
+
+interface SimulationsBoardProps {
     simulations: SimulationData[];
     className?: string;
 }
 
-const BoardSimulations: React.FC<BoardSimulationsProps> = ({
+const SimulationsBoard: React.FC<SimulationsBoardProps> = ({
     simulations,
     className = ''
 }) => {
@@ -53,4 +46,4 @@ const BoardSimulations: React.FC<BoardSimulationsProps> = ({
     );
 };
 
-export default BoardSimulations;
+export default SimulationsBoard;

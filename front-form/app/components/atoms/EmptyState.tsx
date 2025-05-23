@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+const STROKE_WIDTH = 2
 const EmptyState = () => {
     return (
         <motion.div
@@ -22,7 +23,7 @@ const EmptyState = () => {
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeWidth={STROKE_WIDTH}
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M12 20h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>

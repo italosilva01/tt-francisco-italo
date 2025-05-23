@@ -2,20 +2,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Card } from '../atoms/Card';
-import { CARD_RESULT_SIMULATION_LABELS } from '../../utils/constants';
-import { formatCurrency } from '../../utils/formatterString';
+import { Card } from '@/atoms/Card';
+import { CARD_RESULT_SIMULATION_LABELS } from '@/utils/constants';
+import { formatCurrency } from '@/utils/formatterString';
 import dayjs from 'dayjs';
-
-type SimulationData = {
-    property_value: string;
-    value_percentage_entry: string;
-    contract_years: string;
-    monthly_installment: string;
-    total_installments: string;
-    total_interest: string;
-    total_amount: string;
-}
+import { SimulationData } from '@/types/types';
 
 interface CardResultSimulationProps {
     data: SimulationData;
@@ -54,10 +45,8 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
                 </Card.Title>
                 <Card.Content >
                     <div className='flex flex-col justify-between gap-x-4'>
-
-
                         {Object.keys(data).map((key) => {
-                            const typedKey = key as keyof SimulationData;
+                            const typedKey = key as keyof typeof CARD_RESULT_SIMULATION_LABELS;
                             const label = CARD_RESULT_SIMULATION_LABELS[typedKey];
                             const value = typedKey === 'contract_years' ? `${data[typedKey]}` : `R$ ${formatCurrency(data[typedKey] || '')}`;
                             return (

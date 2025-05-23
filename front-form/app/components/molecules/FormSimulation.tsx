@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useTransition } from 'react';
-import { Panel } from '../atoms/Panel';
+import { Panel } from '@/atoms/Panel';
 import { Form } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { simulationFormSchema } from '../../utils/zodSchemas';
-import { CustomInput } from './CustomInput';
-import { FormData, FormSimulationProps } from './types';
-import { FORM_INPUTS } from '../../utils/constants';
+import { simulationFormSchema } from '@/utils/zodSchemas';
+import { CustomInput } from '@/molecules/CustomInput';
+import { FormData, FormSimulationProps } from '@/types/types';
+import { FORM_INPUTS } from '@/utils/constants';
 import Link from 'next/link';
 
 const FormSimulation: React.FC<FormSimulationProps> = ({
