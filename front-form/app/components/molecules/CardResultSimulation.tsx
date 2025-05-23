@@ -11,15 +11,15 @@ import { SimulationData } from '@/types/types';
 interface CardResultSimulationProps {
     data: SimulationData;
     className?: string;
-    id?: string;
     createdAt?: string;
+    sequenceNumber?: number;
 }
 
 const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
     data,
-    id,
     className = '',
-    createdAt
+    createdAt,
+    sequenceNumber
 }) => {
     if (!data) return null;
 
@@ -41,7 +41,7 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
         >
             <Card.Root className='border-none'>
                 <Card.Title className="text-xl font-semibold text-white mb-4">
-                    Resultado da Simulação {id}
+                    Resultado da Simulação {sequenceNumber ? `#${sequenceNumber}` : ''}
                 </Card.Title>
                 <Card.Content >
                     <div className='flex flex-col justify-between gap-x-4'>

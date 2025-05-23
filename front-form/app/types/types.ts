@@ -6,14 +6,11 @@ export type FormData = z.infer<typeof simulationFormSchema>;
 export type SimulationData = {
     property_value: string;
     value_entry: string;
+    financed_amount: string;
     contract_years: string;
     monthly_amount_to_be_saved: string;
-    financed_amount: string;
-    save_duration_contract: string;
-    total_amount: string;
-    id?: string;
-    created_at?: string;
 }
+
 export interface FormSimulationProps {
     className?: string;
     onSubmit: (data: FormData) => void;
@@ -26,8 +23,6 @@ export interface CustomInputProps {
     placeholder: string;
     prefix: string;
 }
-
-
 
 export interface ApiPayloadSimulation {
     property_value: number;

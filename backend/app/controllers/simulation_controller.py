@@ -5,7 +5,7 @@ from ..models.simulation_db import SimulationDB
 from ..models.simulation import SimulationModel
 from typing import Dict, Any, List
 from decimal import Decimal
-from sqlalchemy import desc
+from sqlalchemy import desc, func
 
 FIFTEEN_PERCENT = Decimal('15')
 HUNDRED = Decimal('100')
@@ -18,6 +18,9 @@ async def simulate_financing(data: SimulationModel, db: Session = Depends(get_db
     Calculate a financing simulation
     """
     try:  
+        last_sequence = db.query(func.max(SimulationDB.sequence_number)).scalar()
+        next_sequence = 1 if last_sequence is None else last_sequence + 1
+
         property_value = Decimal(str(data.property_value))
         value_percentage_entry = Decimal(str(data.value_percentage_entry))
         contract_years = Decimal(str(data.contract_years))
@@ -28,6 +31,7 @@ async def simulate_financing(data: SimulationModel, db: Session = Depends(get_db
         monthly_amount_saved = save_duration_contract / (contract_years * TWELVE)
 
         db_simulation = SimulationDB(
+            sequence_number=next_sequence,
             property_value=property_value,
             value_entry=value_entry,
             financed_amount=financed_amount,
@@ -42,7 +46,7 @@ async def simulate_financing(data: SimulationModel, db: Session = Depends(get_db
 
         return {
             "success": True,
-            "data": {
+            "data": {          
                 "property_value": float(property_value),
                 "value_entry": float(value_entry),
                 "financed_amount": float(financed_amount),
@@ -64,7 +68,6 @@ async def get_history(db: Session = Depends(get_db)) -> Dict[str, Any]:
     Get all simulations from the database
     """
     try:
-        # Usando order_by explicitamente com o atributo created_at
         simulations = (
             db.query(SimulationDB)
             .order_by(SimulationDB.created_at.desc())
@@ -76,6 +79,7 @@ async def get_history(db: Session = Depends(get_db)) -> Dict[str, Any]:
             "data": [
             {
                 "id": str(sim.id),
+                "sequence_number": sim.sequence_number,
                 "property_value": float(sim.property_value),
                 "value_entry": float(sim.value_entry),
                 "financed_amount": float(sim.financed_amount),

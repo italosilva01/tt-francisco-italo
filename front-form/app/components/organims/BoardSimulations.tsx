@@ -1,13 +1,19 @@
 "use client"
 
 import { motion } from 'framer-motion';
-import { SimulationData } from '@/app/types/types';
 import CardResultSimulation from '@/molecules/CardResultSimulation';
 
-
-
 interface SimulationsBoardProps {
-    simulations: SimulationData[];
+    simulations: {
+        id: string;
+        sequence_number: number;
+        created_at: string;
+        property_value: string;
+        value_entry: string;
+        financed_amount: string;
+        contract_years: string;
+        monthly_amount_to_be_saved: string;
+    }[];
     className?: string;
 }
 
@@ -30,14 +36,14 @@ const SimulationsBoard: React.FC<SimulationsBoardProps> = ({
             role="region"
             aria-label="Quadro de simulações"
         >
-            {simulations.map((simulation, index) => {
-                const { id, created_at: CreatedAt, ...simulationData } = simulation;
+            {simulations.map((simulation) => {
+                const { created_at: CreatedAt, sequence_number: sequenceNumber, id, ...data } = simulation;
                 return (
                     <CardResultSimulation
-                        key={`simulation-${index}`}
-                        id={id}
+                        key={`simulation-${id}`}
                         createdAt={CreatedAt}
-                        data={simulationData}
+                        sequenceNumber={sequenceNumber}
+                        data={data}
                         className="w-full"
                     />
                 )

@@ -26,48 +26,59 @@ Sistema para simulação de financiamento imobiliário desenvolvido com FastAPI 
 - PostgreSQL
 
 ### Variáveis de Ambiente
-Crie um arquivo `.env` na raiz do projeto backend com as seguintes variáveis:
+Crie três arquivos `.env`. O primeio na raiz do projeto, o segundo na raiz da pasta backend com as seguintes variáveis:
 
-### Para iniciar o Banco de dados
-1. **Navegue até a pasta do backend**
+### arquivo .env na raiz do projeto
+
    ```bash
-   cd backend
-   ```
-2. **Inicie a database**
-    ```bash
-   python -m app.database.init_db
+ # Configurações do Ambiente
+NODE_ENV=development
+FLASK_ENV=development
+DEBUG=true
+
+# Configurações do Frontend (Next.js)
+NEXT_TELEMETRY_DEBUG=1
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_CLIENT_API_URL=http://localhost:8000
+
+# Configurações do Backend (Flask/Python)
+# URL de conexão com o banco de dados
+# Formato: postgresql://usuario:senha@host:porta/nome_do_banco
+DATABASE_URL=postgresql://postgres:sua_senha_aqui@db:5432/amore_db
+
+# Configurações do PostgreSQL
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=sua_senha_aqui
+POSTGRES_DB=amore_db
+
+# Portas dos serviços (opcional, já definidas no docker-compose)
+# FRONTEND_PORT=3000
+# BACKEND_PORT=8000
+# DATABASE_PORT=5432
    ```
 
-### Configuração e Execução do Backend
+### arquivo .env backend
 
-1. **Navegue até a pasta do backend**
    ```bash
-   cd backend
+  DATABASE_URL=postgresql://postgres:sua_senha_aqui@localhost:5432/amore_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=sua_senha_aqui
+POSTGRES_DB=amore_db
    ```
-
-2. **Ative o ambiente virtual**
+### arquivo .env frontend
    ```bash
-   source venv/Scripts/activate
+NODE_ENV=development
+DEBUG=true
+NEXT_TELEMETRY_DEBUG=1
+NEXT_PUBLIC_API_URL=http://backend:8000
+NEXT_PUBLIC_CLIENT_API_URL=http://localhost:8000
    ```
-   > Nota: Você verá `(venv)` no início do prompt quando estiver ativado
+### Executando o docker-compose
 
-3. **Instale as dependências do projeto**
+Depois das variaveis de ambiente definidas, execute o coamndo abaixo:
    ```bash
-   pip install -r requirements.txt --no-cache-dir
-   ```
-
-4. **Execute o servidor de desenvolvimento**
-   ```bash
-   python run.py
-   ```
-
-
-teste
-docker-compose up -d db
-docker-compose up -d backend
-
-
 docker-compose up --build -d
+   ```
 > ⚠️ Certifique-se de que todas as variáveis de ambiente estejam configuradas antes de executar o servidor
 
 

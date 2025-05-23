@@ -23,6 +23,7 @@ export const FORM_INPUTS = [
 ] as const; 
 
 export const CARD_RESULT_SIMULATION_LABELS = {
+    sequence_number: 'Número da simulação',
     property_value: 'Valor do imóvel',
     value_entry: 'Valor da entrada',
     contract_years: 'Anos de contrato',

@@ -8,6 +8,7 @@ class SimulationDB(Base):
     __tablename__ = "simulations"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    sequence_number = Column(Integer, nullable=False)
     property_value = Column(Float, nullable=False)
     value_entry = Column(Float, nullable=False)
     financed_amount = Column(Float, nullable=False)
