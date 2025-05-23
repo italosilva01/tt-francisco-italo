@@ -5,6 +5,7 @@ from ..models.simulation_db import SimulationDB
 from ..models.simulation import SimulationModel
 from typing import Dict, Any, List
 from decimal import Decimal
+from sqlalchemy import desc
 
 FIFTEEN_PERCENT = Decimal('15')
 HUNDRED = Decimal('100')
@@ -63,7 +64,13 @@ async def get_history(db: Session = Depends(get_db)) -> Dict[str, Any]:
     Get all simulations from the database
     """
     try:
-        simulations = db.query(SimulationDB).all()
+        # Usando order_by explicitamente com o atributo created_at
+        simulations = (
+            db.query(SimulationDB)
+            .order_by(SimulationDB.created_at.desc())
+            .all()
+        )
+        
         return {
             "success": True,
             "data": [
@@ -73,11 +80,12 @@ async def get_history(db: Session = Depends(get_db)) -> Dict[str, Any]:
                 "value_entry": float(sim.value_entry),
                 "financed_amount": float(sim.financed_amount),
                 "contract_years": float(sim.contract_years),
-                "created_at": sim.created_at.isoformat()
+                "created_at": sim.created_at.isoformat(),
+                "monthly_amount_to_be_saved": float(sim.monthly_amount_saved)
             }
             for sim in simulations
             ]
-            }   
+        }   
     except Exception as e:
         raise HTTPException(
             status_code=500,

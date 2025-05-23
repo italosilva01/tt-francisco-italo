@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
 import FormSimulation from './components/molecule/FormSimulation';
@@ -39,8 +39,13 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (isMobileScreen) {
+      setX(0)
+    }
+  }, [isMobileScreen])
   return (
-    <BaseTemplate >
+    <BaseTemplate className='lg:!items-start lg:flex-row'>
       <motion.div
         initial={{ opacity: 0, x: -100 }}
         animate={{

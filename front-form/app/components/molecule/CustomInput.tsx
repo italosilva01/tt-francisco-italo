@@ -10,7 +10,7 @@ export const CustomInput = ({ control, nameInput, label, placeholder, prefix }: 
         <FormField
             control={control}
             name={nameInput}
-            render={({ field }) => (
+            render={({ field: { onChange, value, ...field } }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
@@ -30,19 +30,19 @@ export const CustomInput = ({ control, nameInput, label, placeholder, prefix }: 
                                 {...field}
                                 value={
                                     isYearORValuePercentageInput
-                                        ? field.value ?? ''
-                                        : formatCurrency(field.value?.toString())
+                                        ? value ?? ''
+                                        : value !== undefined
+                                            ? formatCurrency(value.toString())
+                                            : ''
                                 }
                                 onChange={(e) => {
                                     const rawValue = e.target.value;
                                     if (isYearORValuePercentageInput) {
                                         const value = rawValue.replace(/\D/g, '');
-                                        field.onChange(value ? Number(value) : undefined);
+                                        onChange(value ? Number(value) : undefined);
                                     } else {
-                                        const formattedValue = formatCurrency(rawValue);
                                         const numericValue = unformatCurrency(rawValue);
-                                        e.target.value = formattedValue;
-                                        field.onChange(numericValue === 0 ? 0 : numericValue || undefined);
+                                        onChange(numericValue || undefined);
                                     }
                                 }}
                             />
@@ -53,4 +53,4 @@ export const CustomInput = ({ control, nameInput, label, placeholder, prefix }: 
             )}
         />
     );
-}; 
+};

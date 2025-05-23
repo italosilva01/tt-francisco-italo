@@ -16,7 +16,7 @@ interface CardQuotesProps extends HTMLAttributes<HTMLImageElement> {
 
 const CardRoot: React.FC<CardProps> = ({ children, className, ...rest }) => {
     return (
-        <div className={`border rounded-2xl py-[1.875rem] px-[1.5rem] border-purple-dull cursor-pointer hover:bg-purple-dull-10 ${className}`} {...rest}>
+        <div className={`border rounded-2xl  border-purple-dull cursor-pointer hover:bg-purple-dull-10 ${className}`} {...rest}>
             {children}
         </div>
     );

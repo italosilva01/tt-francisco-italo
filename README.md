@@ -61,6 +61,11 @@ Crie um arquivo `.env` na raiz do projeto backend com as seguintes variáveis:
    python run.py
    ```
 
+
+teste
+docker-compose up -d db
+docker-compose up -d backend
+
 > ⚠️ Certifique-se de que todas as variáveis de ambiente estejam configuradas antes de executar o servidor
 
 

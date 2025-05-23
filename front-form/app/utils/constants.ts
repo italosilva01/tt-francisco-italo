@@ -30,4 +30,6 @@ export const CARD_RESULT_SIMULATION_LABELS = {
     financed_amount: 'Valor financiado',
     save_duration_contract: "Guardar ao longo do contrato",
     total_amount: 'Valor total',
+    id: 'id',
+    created_at: 'Data da simulação',
 }

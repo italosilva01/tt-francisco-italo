@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Card } from '../atoms/Card';
 import { CARD_RESULT_SIMULATION_LABELS } from '../../utils/constants';
 import { formatCurrency } from '../../utils/formatterString';
+import dayjs from 'dayjs';
 
 type SimulationData = {
     property_value: string;
@@ -17,15 +18,20 @@ type SimulationData = {
 }
 
 interface CardResultSimulationProps {
-    data: Partial<SimulationData>;
+    data: SimulationData;
     className?: string;
+    id?: string;
+    createdAt?: string;
 }
 
 const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
     data,
-    className = ''
+    id,
+    className = '',
+    createdAt
 }) => {
     if (!data) return null;
+
     return (
         <motion.div
             initial={{ opacity: 0, x: 100, scale: 0.8 }}
@@ -44,26 +50,33 @@ const CardResultSimulation: React.FC<CardResultSimulationProps> = ({
         >
             <Card.Root className='border-none'>
                 <Card.Title className="text-xl font-semibold text-white mb-4">
-                    Resultado da Simulação
+                    Resultado da Simulação {id}
                 </Card.Title>
-                <Card.Content className="grid grid-cols-2 justify-between gap-x-4 ">
+                <Card.Content >
+                    <div className='flex flex-col justify-between gap-x-4'>
 
-                    {Object.keys(data).map((key) => {
-                        const typedKey = key as keyof SimulationData;
-                        return (
-                            <React.Fragment key={key}>
-                                <Card.Label
-                                    text={`${CARD_RESULT_SIMULATION_LABELS[typedKey]} :`}
-                                    className='text-white/80 border-b !w-fit border-white/20'
-                                />
-                                <Card.Label
-                                    text={typedKey === 'contract_years' ? `${data[typedKey]}` : `R$ ${formatCurrency(data[typedKey] || '')}`}
-                                    className='text-white/80 w-fit  ml-auto'
-                                />
-                            </React.Fragment>
-                        );
-                    })}
 
+                        {Object.keys(data).map((key) => {
+                            const typedKey = key as keyof SimulationData;
+                            const label = CARD_RESULT_SIMULATION_LABELS[typedKey];
+                            const value = typedKey === 'contract_years' ? `${data[typedKey]}` : `R$ ${formatCurrency(data[typedKey] || '')}`;
+                            return (
+                                <div className='flex' key={key}>
+                                    <Card.Label
+                                        text={`${label} :`}
+                                        className='text-white/80 border-b text-pretty !w-fit border-white/20'
+                                    />
+                                    <span className='text-white/80 ml-auto max-w-[7.8125rem] text-nowrap truncate'>{value}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className='mt-4 border-t'>
+                        <Card.Label
+                            text={`Criado em: ${dayjs(createdAt).format('DD/MM/YYYY - HH:mm')}`}
+                            className='text-white/80  !w-fit border-white/20'
+                        />
+                    </div>
                 </Card.Content>
             </Card.Root>
         </motion.div>

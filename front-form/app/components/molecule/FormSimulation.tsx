@@ -24,6 +24,7 @@ const FormSimulation: React.FC<FormSimulationProps> = ({
             valuePercentageEntry: undefined,
             contractYears: undefined,
         },
+        mode: 'onChange',
     });
 
     const handleSubmit = async (data: FormData) => {
